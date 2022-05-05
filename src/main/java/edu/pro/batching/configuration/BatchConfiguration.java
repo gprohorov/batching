@@ -52,7 +52,9 @@ public class BatchConfiguration {
 
     @Bean
     public MongoItemWriter<Employee> writer(MongoTemplate mongoTemplate) {
-        return new MongoItemWriterBuilder<Employee>().template(mongoTemplate).collection("employee")
+        return new MongoItemWriterBuilder<Employee>()
+                .template(mongoTemplate)
+                .collection("employee")
                 .build();
     }
 
@@ -64,8 +66,13 @@ public class BatchConfiguration {
     @Bean
     public Step step1(FlatFileItemReader<EmployeeDetail> itemReader, MongoItemWriter<Employee> itemWriter)
             throws Exception {
-        return this.stepBuilderFactory.get("step1").<EmployeeDetail, Employee>chunk(10).reader(itemReader)
-                .processor(processor()).writer(itemWriter).build();
+        return this.stepBuilderFactory
+                .get("step1")
+                .<EmployeeDetail, Employee>chunk(10)
+                .reader(itemReader)
+                .processor(processor())
+                .writer(itemWriter)
+                .build();
     }
 
     @Bean
